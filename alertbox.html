@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Epic Stream Alerts</title>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: 'Arial Black', Arial, sans-serif;
+    background: transparent;
+}
+
+/* ALERT BOX STYLE */
+.alertBox {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    padding: 20px 35px;
+    background: linear-gradient(135deg, #8000FF, #C080FF);
+    color: #fff;
+    border-radius: 20px;
+    font-size: 32px;
+    box-shadow: 0 0 30px rgba(128,0,255,0.8);
+    text-align: center;
+    min-width: 300px;
+    max-width: 600px;
+    z-index: 9999;
+    transition: transform 0.5s cubic-bezier(0.68,-0.55,0.27,1.55), opacity 0.5s ease-out;
+    opacity: 0;
+}
+
+/* Show animation */
+.show {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+}
+
+/* Avatar placeholder */
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 15px;
+    background: url('https://i.imgur.com/OYVpe4w.png') no-repeat center center;
+    background-size: cover;
+}
+</style>
+</head>
+
+<body>
+
+<div id="alertBox" class="alertBox"></div>
+
+<script>
+// Base64 tiny sound for follower and donation
+var followerSound = new Audio("data:audio/mp3;base64,//uQxAAAAAAAAAAAAAA...");
+var donationSound = new Audio("data:audio/mp3;base64,//uQxAAAAAAAAAAAAAA...");
+
+// Show alert function
+function showAlert(type, amount="") {
+    const box = document.getElementById("alertBox");
+    if(type === "follower") {
+        box.innerHTML = '<div class="avatar"></div>🎉 New Follower!';
+        followerSound.play();
+    }
+    if(type === "donation") {
+        box.innerHTML = `💜 Thanks for $${amount} Donation! 🐉`;
+        donationSound.play();
+    }
+
+    box.classList.add("show");
+
+    setTimeout(() => {
+        box.classList.remove("show");
+    }, 4000);
+}
+
+// URL trigger system
+const params = new URLSearchParams(window.location.search);
+const alertType = params.get("alert");
+const amount = params.get("amount");
+
+if(alertType === "follower") showAlert("follower");
+if(alertType === "donation") showAlert("donation", amount);
+
+</script>
+
+</body>
+</html>
